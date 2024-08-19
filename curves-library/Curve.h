@@ -10,6 +10,8 @@ class Curve
 public:
     virtual Point3D getPoint(double t) const = 0;
     virtual Point3D getDerivative(double t) const = 0;
+
+    virtual ~Curve() = default;
 };
 }
 

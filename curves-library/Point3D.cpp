@@ -2,8 +2,7 @@
 
 namespace cadex
 {
-Point3D::Point3D(double x, double y, double z)
-    : m_x{ x }, m_y{ y }, m_z{ z }
+Point3D::Point3D(double x, double y, double z) : m_x{ x }, m_y{ y }, m_z{ z }
 {
 }
 
@@ -35,5 +34,13 @@ void Point3D::setY(double y)
 void Point3D::setZ(double z)
 {
     m_z = z;
+}
+
+std::ostream& operator<<(std::ostream& out, const Point3D& point)
+{
+    out << '[' << point.getX() << ", " << point.getY() << ", " << point.getZ()
+        << ']';
+
+    return out;
 }
 }

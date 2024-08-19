@@ -1,5 +1,7 @@
-#ifndef CADEX_CURVES_LIBRARY_CIRCLE_H_
-#define CADEX_CURVES_LIBRARY_CIRCLE_H_
+#ifndef CADEX_CURVES_LIBRARY_ELLIPSE_H_
+#define CADEX_CURVES_LIBRARY_ELLIPSE_H_
+
+#include <ostream>
 
 #include "Curve.h"
 

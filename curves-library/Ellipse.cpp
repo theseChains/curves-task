@@ -1,6 +1,7 @@
 #include "Ellipse.h"
 
 #include <cmath>
+#include <iostream>
 
 namespace cadex
 {

@@ -4,8 +4,7 @@
 
 namespace cadex
 {
-Circle::Circle(double radius)
-    : m_radius{ radius }
+Circle::Circle(double radius) : m_radius{ radius }
 {
 }
 

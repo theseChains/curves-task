@@ -1,6 +1,8 @@
 #ifndef CADEX_CURVES_LIBRARY_POINT3D_H_
 #define CADEX_CURVES_LIBRARY_POINT3D_H_
 
+#include <ostream>
+
 namespace cadex
 {
 class Point3D
@@ -22,6 +24,8 @@ private:
     double m_y;
     double m_z;
 };
+
+std::ostream& operator<<(std::ostream& out, const Point3D& point);
 }
 
 #endif

@@ -4,8 +4,7 @@
 
 namespace cadex
 {
-Helix::Helix(double radius, double step)
-    : m_radius{ radius }, m_step{ step }
+Helix::Helix(double radius, double step) : m_radius{ radius }, m_step{ step }
 {
 }
 
