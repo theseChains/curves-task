@@ -40,7 +40,7 @@ curves-task is a small C++ program that implements support of a few 3D curves.
     ```
 2. Navigate to the executable directory:
     ```sh
-    cd curves_executable
+    cd curves-executable
     ```
 
 
