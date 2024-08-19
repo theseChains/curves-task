@@ -10,7 +10,10 @@ Ellipse::Ellipse(double xRadius, double yRadius)
 {
     if (xRadius < 0.0 || yRadius < 0.0)
     {
-        throw std::invalid_argument{ "cadex::Ellipse::Ellipse(double, double): xRadius and yRadius must be greater than 0" };
+        throw std::invalid_argument{
+            "cadex::Ellipse::Ellipse(double, double): xRadius and yRadius must "
+            "be greater than 0"
+        };
     }
 }
 

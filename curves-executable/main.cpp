@@ -1,5 +1,5 @@
-#include <tbb/parallel_reduce.h>
 #include <tbb/blocked_range.h>
+#include <tbb/parallel_reduce.h>
 
 #include <algorithm>
 #include <iostream>
@@ -36,7 +36,8 @@ std::vector<std::shared_ptr<cadex::Curve>> getRandomCurves(int count)
         {
             double xRadius{ doubleDistribution(mt) };
             double yRadius{ doubleDistribution(mt) };
-            curves.push_back(std::make_shared<cadex::Ellipse>(xRadius, yRadius));
+            curves.push_back(
+                std::make_shared<cadex::Ellipse>(xRadius, yRadius));
         }
         else if (shapeType == 2)
         {
@@ -49,7 +50,8 @@ std::vector<std::shared_ptr<cadex::Curve>> getRandomCurves(int count)
     return curves;
 }
 
-void printCoordinatesAndDerivatives(const std::vector<std::shared_ptr<cadex::Curve>>& curves)
+void printCoordinatesAndDerivatives(
+    const std::vector<std::shared_ptr<cadex::Curve>>& curves)
 {
     constexpr double parameter{ std::numbers::pi / 4.0 };
     for (const auto& curve : curves)
@@ -60,8 +62,8 @@ void printCoordinatesAndDerivatives(const std::vector<std::shared_ptr<cadex::Cur
     }
 }
 
-std::vector<std::shared_ptr<cadex::Circle>>
-populateCircleContainer(const std::vector<std::shared_ptr<cadex::Curve>>& curves)
+std::vector<std::shared_ptr<cadex::Circle>> populateCircleContainer(
+    const std::vector<std::shared_ptr<cadex::Curve>>& curves)
 {
     std::vector<std::shared_ptr<cadex::Circle>> circles{};
 
@@ -76,11 +78,11 @@ populateCircleContainer(const std::vector<std::shared_ptr<cadex::Curve>>& curves
     return circles;
 }
 
-double calculateTotalRadius(const std::vector<std::shared_ptr<cadex::Circle>>& circles)
+double calculateTotalRadius(
+    const std::vector<std::shared_ptr<cadex::Circle>>& circles)
 {
     double totalRadius{ tbb::parallel_reduce(
-        tbb::blocked_range<std::size_t>(0, circles.size()),
-        0.0,
+        tbb::blocked_range<std::size_t>(0, circles.size()), 0.0,
         [&](const tbb::blocked_range<std::size_t>& subrange, double init)
         {
             for (std::size_t i{ subrange.begin() }; i != subrange.end(); ++i)
@@ -99,7 +101,9 @@ int main()
     std::vector<std::shared_ptr<cadex::Curve>> curves{ getRandomCurves(10) };
     printCoordinatesAndDerivatives(curves);
 
-    std::vector<std::shared_ptr<cadex::Circle>> circles{ populateCircleContainer(curves) };
+    std::vector<std::shared_ptr<cadex::Circle>> circles{
+        populateCircleContainer(curves)
+    };
 
     std::ranges::sort(circles,
                       [](const auto& first, const auto& second)
