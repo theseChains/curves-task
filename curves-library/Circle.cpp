@@ -6,6 +6,10 @@ namespace cadex
 {
 Circle::Circle(double radius) : m_radius{ radius }
 {
+    if (radius < 0.0)
+    {
+        throw std::invalid_argument{ "cadex::Circle::Circle(double): radius must be greater than 0" };
+    }
 }
 
 Point3D Circle::getPoint(double t) const

@@ -8,6 +8,10 @@ namespace cadex
 Ellipse::Ellipse(double xRadius, double yRadius)
     : m_xRadius{ xRadius }, m_yRadius{ yRadius }
 {
+    if (xRadius < 0.0 || yRadius < 0.0)
+    {
+        throw std::invalid_argument{ "cadex::Ellipse::Ellipse(double, double): xRadius and yRadius must be greater than 0" };
+    }
 }
 
 Point3D Ellipse::getPoint(double t) const

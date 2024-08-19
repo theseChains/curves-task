@@ -6,6 +6,10 @@ namespace cadex
 {
 Helix::Helix(double radius, double step) : m_radius{ radius }, m_step{ step }
 {
+    if (radius < 0.0)
+    {
+        throw std::invalid_argument{ "cadex::Helix::Helix(double, double): radius must be greater than 0" };
+    }
 }
 
 Point3D Helix::getPoint(double t) const
