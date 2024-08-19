@@ -1,6 +1,7 @@
 #include "Circle.h"
 
 #include <cmath>
+#include <stdexcept>
 
 namespace cadex
 {

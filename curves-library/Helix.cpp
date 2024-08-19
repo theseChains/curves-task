@@ -1,6 +1,7 @@
 #include "Helix.h"
 
 #include <cmath>
+#include <stdexcept>
 
 namespace cadex
 {
