@@ -1,5 +1,4 @@
 add_library(curves SHARED
-    src/Curve.cpp
     src/Circle.cpp
     src/Ellipse.cpp
     src/Helix.cpp
