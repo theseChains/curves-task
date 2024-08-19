@@ -11,6 +11,7 @@ public:
     Helix(double radius, double step);
 
     Point3D getPoint(double t) const override;
+    Point3D getDerivative(double t) const override;
 
     double getRadius() const;
     double getStep() const;

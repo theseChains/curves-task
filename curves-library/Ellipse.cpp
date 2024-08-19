@@ -14,6 +14,11 @@ Point3D Ellipse::getPoint(double t) const
     return { m_xRadius * std::cos(t), m_yRadius * std::sin(t), 0.0 };
 }
 
+Point3D Ellipse::getDerivative(double t) const
+{
+    return { -m_xRadius * std::sin(t), m_yRadius * std::cos(t), 0.0 };
+}
+
 double Ellipse::getXRadius() const
 {
     return m_xRadius;

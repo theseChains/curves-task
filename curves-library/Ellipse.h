@@ -11,6 +11,7 @@ public:
     Ellipse(double xRadius, double yRadius);
 
     Point3D getPoint(double t) const override;
+    Point3D getDerivative(double t) const override;
 
     double getXRadius() const;
     double getYRadius() const;
