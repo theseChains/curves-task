@@ -9,11 +9,11 @@
 #include <ranges>
 #include <vector>
 
-#include "../curves-library/Circle.h"
-#include "../curves-library/Curve.h"
-#include "../curves-library/Ellipse.h"
-#include "../curves-library/Helix.h"
-#include "../curves-library/Point3D.h"
+#include "Circle.h"
+#include "Curve.h"
+#include "Ellipse.h"
+#include "Helix.h"
+#include "Point3D.h"
 
 std::vector<std::shared_ptr<cadex::Curve>> getRandomCurves(int count)
 {
@@ -49,6 +49,33 @@ std::vector<std::shared_ptr<cadex::Curve>> getRandomCurves(int count)
     return curves;
 }
 
+void printCoordinatesAndDerivatives(const std::vector<std::shared_ptr<cadex::Curve>>& curves)
+{
+    constexpr double parameter{ std::numbers::pi / 4.0 };
+    for (const auto& curve : curves)
+    {
+        std::cout << "Point: " << curve->getPoint(parameter) << '\n';
+        std::cout << "Derivative: " << curve->getDerivative(parameter)
+                  << "\n\n";
+    }
+}
+
+std::vector<std::shared_ptr<cadex::Circle>>
+populateCircleContainer(const std::vector<std::shared_ptr<cadex::Curve>>& curves)
+{
+    std::vector<std::shared_ptr<cadex::Circle>> circles{};
+
+    for (const auto& curve : curves)
+    {
+        if (auto circle = std::dynamic_pointer_cast<cadex::Circle>(curve))
+        {
+            circles.push_back(circle);
+        }
+    }
+
+    return circles;
+}
+
 double calculateTotalRadius(const std::vector<std::shared_ptr<cadex::Circle>>& circles)
 {
     double totalRadius{ tbb::parallel_reduce(
@@ -70,24 +97,9 @@ double calculateTotalRadius(const std::vector<std::shared_ptr<cadex::Circle>>& c
 int main()
 {
     std::vector<std::shared_ptr<cadex::Curve>> curves{ getRandomCurves(10) };
+    printCoordinatesAndDerivatives(curves);
 
-    constexpr double parameter{ std::numbers::pi / 4.0 };
-    for (const auto& curve : curves)
-    {
-        std::cout << "Point: " << curve->getPoint(parameter) << '\n';
-        std::cout << "Derivative: " << curve->getDerivative(parameter)
-                  << "\n\n";
-    }
-
-    std::vector<std::shared_ptr<cadex::Circle>> circles{};
-
-    for (const auto& curve : curves)
-    {
-        if (auto circle = std::dynamic_pointer_cast<cadex::Circle>(curve))
-        {
-            circles.push_back(circle);
-        }
-    }
+    std::vector<std::shared_ptr<cadex::Circle>> circles{ populateCircleContainer(curves) };
 
     std::ranges::sort(circles,
                       [](const auto& first, const auto& second)
@@ -95,7 +107,7 @@ int main()
                           return first->getRadius() < second->getRadius();
                       });
 
-    std::cout << "circle radii in ascending order: ";
+    std::cout << "Circle radii in ascending order: ";
     for (const auto& circle : circles)
     {
         std::cout << circle->getRadius() << ' ';
