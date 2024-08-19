@@ -5,6 +5,7 @@
 #include <iostream>
 #include <memory>
 #include <numbers>
+#include <random>
 #include <ranges>
 #include <vector>
 
@@ -14,20 +15,61 @@
 #include "../curves-library/Helix.h"
 #include "../curves-library/Point3D.h"
 
-int main()
+std::vector<std::shared_ptr<cadex::Curve>> getRandomCurves(int count)
 {
     std::vector<std::shared_ptr<cadex::Curve>> curves{};
+    curves.reserve(count);
 
-    curves.push_back(std::make_unique<cadex::Circle>(5.0));
-    curves.push_back(std::make_unique<cadex::Circle>(10.0));
-    curves.push_back(std::make_unique<cadex::Circle>(8.0));
-    curves.push_back(std::make_unique<cadex::Circle>(3.0));
+    static std::mt19937 mt{ std::random_device{}() };
+    std::uniform_int_distribution shapeTypeDistribution{ 0, 2 };
+    std::uniform_real_distribution doubleDistribution{ 1.0, 100.0 };
 
-    curves.push_back(std::make_unique<cadex::Ellipse>(5.0, 6.0));
-    curves.push_back(std::make_unique<cadex::Ellipse>(10.0, 3.0));
+    for (int i{ 0 }; i < count; ++i)
+    {
+        int shapeType{ shapeTypeDistribution(mt) };
+        if (shapeType == 0)
+        {
+            double radius{ doubleDistribution(mt) };
+            curves.push_back(std::make_shared<cadex::Circle>(radius));
+        }
+        else if (shapeType == 1)
+        {
+            double xRadius{ doubleDistribution(mt) };
+            double yRadius{ doubleDistribution(mt) };
+            curves.push_back(std::make_shared<cadex::Ellipse>(xRadius, yRadius));
+        }
+        else if (shapeType == 2)
+        {
+            double radius{ doubleDistribution(mt) };
+            double step{ doubleDistribution(mt) };
+            curves.push_back(std::make_shared<cadex::Helix>(radius, step));
+        }
+    }
 
-    curves.push_back(std::make_unique<cadex::Helix>(5.0, 8.0));
-    curves.push_back(std::make_unique<cadex::Helix>(10.0, 4.0));
+    return curves;
+}
+
+double calculateTotalRadius(const std::vector<std::shared_ptr<cadex::Circle>>& circles)
+{
+    double totalRadius{ tbb::parallel_reduce(
+        tbb::blocked_range<std::size_t>(0, circles.size()),
+        0.0,
+        [&](const tbb::blocked_range<std::size_t>& subrange, double init)
+        {
+            for (std::size_t i{ subrange.begin() }; i != subrange.end(); ++i)
+            {
+                init += circles[i]->getRadius();
+            }
+            return init;
+        },
+        std::plus<double>{}) };
+
+    return totalRadius;
+}
+
+int main()
+{
+    std::vector<std::shared_ptr<cadex::Curve>> curves{ getRandomCurves(10) };
 
     constexpr double parameter{ std::numbers::pi / 4.0 };
     for (const auto& curve : curves)
@@ -60,20 +102,7 @@ int main()
     }
     std::cout << '\n';
 
-    double totalRadius = tbb::parallel_reduce(
-        tbb::blocked_range<std::size_t>(0, circles.size()),
-        0.0,
-        [&](const tbb::blocked_range<std::size_t>& subrange, double init)
-        {
-            for (std::size_t i{ subrange.begin() }; i != subrange.end(); ++i)
-            {
-                init += circles[i]->getRadius();
-            }
-            return init;
-        },
-        std::plus<double>{});
-
-    std::cout << "total circle radii: " << totalRadius << '\n';
+    std::cout << "Total radii sum: " << calculateTotalRadius(circles) << '\n';
 
     return 0;
 }
