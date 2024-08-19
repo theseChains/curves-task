@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <stdexcept>
+#include <numbers>
 
 namespace cadex
 {
@@ -15,12 +16,12 @@ Helix::Helix(double radius, double step) : m_radius{ radius }, m_step{ step }
 
 Point3D Helix::getPoint(double t) const
 {
-    return { m_radius * std::cos(t), m_radius * std::sin(t), m_step * t };
+    return { m_radius * std::cos(t), m_radius * std::sin(t), m_step * t / (2 * std::numbers::pi) };
 }
 
 Point3D Helix::getDerivative(double t) const
 {
-    return { -m_radius * std::sin(t), m_radius * std::cos(t), m_step };
+    return { -m_radius * std::sin(t), m_radius * std::cos(t), m_step / (2 * std::numbers::pi) };
 }
 
 double Helix::getRadius() const
